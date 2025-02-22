@@ -12,6 +12,7 @@ import time
 # %% get current folder
 cwd = os.getcwd()
 path_data = f'{cwd}/data/'
+print(path_data)
 
 # %% get key
 df_key = pd.read_csv(f'{path_data}key.csv')
@@ -74,6 +75,9 @@ for puuid in tqdm(df_challengers['puuid']):
     ]
 
 df_players = df_challengers.merge(df_name, on= 'puuid')
+
 # %%
-df_players.to_csv(f'{path_data}dim_players.csv', index= False)
+df_players.to_csv(f'{path_data}/players/dim_players{extract_date}.csv', index= False)
+
+
 # %%
