@@ -1,2 +1,2 @@
 @echo off
-python get_challengers.py
+python get_players.py
