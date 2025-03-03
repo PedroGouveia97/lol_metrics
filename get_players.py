@@ -3,16 +3,16 @@ from riotwatcher import LolWatcher, ApiError
 from datetime import date
 import pandas as pd, numpy as np
 from tqdm import tqdm
-from numpy import nan 
 import os
 import requests
 import json
 import time
 
 # %% get current folder
+print('-----   GET PLAYERS     -----')
+
 cwd = os.getcwd()
 path_data = f'{cwd}/data/'
-print(path_data)
 
 # %% get key
 df_key = pd.read_csv(f'{path_data}key.csv')
@@ -33,7 +33,7 @@ def get_challengers(region, ext_date):
         wins = item['wins']
         losses = item['losses']
         winrate = item['wins'] / (item['wins'] + item['losses'])
-        #
+
         df_rank.loc[df_rank.shape[0]] = [
         ext_date,
         summoner_id,
@@ -53,7 +53,7 @@ def get_summoner(puuid, key):
         while resp_code != 200:
             resp = requests.get(f'https://americas.api.riotgames.com/riot/account/v1/accounts/by-puuid/{puuid}?api_key={key}')
             resp_code = resp.status_code
-            time.sleep(1)
+            time.sleep(0.5)
 
         resp_json = json.loads(resp.text)
         sumonner_name = resp_json['gameName']
@@ -77,7 +77,7 @@ for puuid in tqdm(df_challengers['puuid']):
 df_players = df_challengers.merge(df_name, on= 'puuid')
 
 # %%
-df_players.to_csv(f'{path_data}/players/dim_players{extract_date}.csv', index= False)
+df_players.to_csv(f'{path_data}/bronze/players/dim_players{extract_date}.csv', index= False)
 
 
 # %%
